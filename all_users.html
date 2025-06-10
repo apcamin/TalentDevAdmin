@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Users | Ayiera Initiative Talent Development</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1a73e8;
+            --dark-blue: #0d47a1;
+            --light-blue: #e8f0fe;
+            --white: #ffffff;
+            --gray: #f5f5f5;
+            --dark-gray: #757575;
+            --sidebar-width: 280px;
+            --sidebar-collapsed-width: 70px;
+            --header-height: 60px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            overflow-x: hidden;
+            background-color: #f5f7fa;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(135deg, var(--white), var(--white));
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: var(--transition);
+            z-index: 1000;
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2em;
+            color: #fff;
+        }
+
+        .logo h1 {
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+        .tagline {
+            margin-top: 5px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left-color: white;
+        }
+
+        .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-left-color: white;
+        }
+
+        .nav-item i {
+            width: 20px;
+            margin-right: 10px;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
+            transition: var(--transition);
+        }
+
+        .main-content.expanded {
+            margin-left: var(--sidebar-collapsed-width);
+            width: calc(100% - var(--sidebar-collapsed-width));
+        }
+
+        .top-header {
+            height: var(--header-height);
+            background: white;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            color: var(--dark-gray);
+        }
+
+        .page-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: var(--dark-blue);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            background: var(--light-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+        }
+
+        .notifications {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #dc3545;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Content Body Styles */
+        .content-body {
+            padding: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .card-header h3 {
+            color: var(--dark-blue);
+            font-weight: 600;
+        }
+
+        .card-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .add-user-btn {
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .add-user-btn:hover {
+            background-color: var(--dark-blue);
+            transform: translateY(-1px);
+        }
+
+        .search-filter-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 8px 35px 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            width: 250px;
+            font-size: 14px;
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--dark-gray);
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            min-width: 150px;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-export {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .btn-export:hover {
+            background: #218838;
+            transform: translateY(-1px);
+        }
+
+        .btn-export:last-child {
+            background: #dc3545;
+        }
+
+        .btn-export:last-child:hover {
+            background: #c82333;
+        }
+
+        /* Table Styles */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table th {
+            background: var(--gray);
+            font-weight: 600;
+            color: var(--dark-blue);
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        .status-approved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-suspended {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 5px;
+        }
+
+        .action-btn {
+            padding: 6px 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: var(--transition);
+        }
+
+        .view-btn { background: #17a2b8; color: white; }
+        .edit-btn { background: #ffc107; color: #212529; }
+        .approve-btn { background: #28a745; color: white; }
+        .suspend-btn { background: #dc3545; color: white; }
+        .delete-btn { background: #6c757d; color: white; }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Table Footer */
+        .table-footer {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            background: #f8f9fa;
+        }
+
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pagination button {
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: var(--light-blue);
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Loading and No Data States */
+        .loading, .no-data {
+            text-align: center;
+            padding: 40px;
+            color: var(--dark-gray);
+            font-style: italic;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .card-actions {
+                justify-content: center;
+            }
+
+            .search-filter-container {
+                justify-content: center;
+            }
+
+            .search-box input {
+                width: 200px;
+            }
+
+            .table-footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>Ayiera Initiative</h1>
+                </div>
+                <p class="tagline">Talent Development</p>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <h3 class="nav-section-title">Management</h3>
+                    
+                    <!-- Users Dropdown -->
+                    <div class="nav-item has-dropdown">
+                        <div class="nav-link dropdown-toggle">
+                            <i class="fas fa-users"></i>
+                            <span>Users</span>
+                            <i class="fas fa-chevron-down dropdown-icon"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="all_users.html" class="dropdown-item">All Users</a>
+                            <!-- <a href="active_users.html" class="dropdown-item">Active</a>
+                            <a href="pending_users.html" class="dropdown-item">Pending</a>
+                            <a href="suspended_users.html" class="dropdown-item">Suspended</a> -->
+                        </div>
+                    </div>
+                    
+                    <!-- Employees Dropdown -->
+                    <!-- <div class="nav-item has-dropdown">
+                        <div class="nav-link dropdown-toggle">
+                            <i class="fas fa-user-tie"></i>
+                            <span>Employees</span>
+                            <i class="fas fa-chevron-down dropdown-icon"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="all_employees.html" class="dropdown-item">All Employees</a>
+                            <a href="active_employees.html" class="dropdown-item">Active</a>
+                            <a href="pending_employees.html" class="dropdown-item">Pending</a>
+                            <a href="suspended_employees.html" class="dropdown-item">Suspended</a>
+                        </div>
+                    </div> -->
+                </div>
+
+                <div class="nav-section">
+                    <h3 class="nav-section-title">Reports</h3>
+                    
+                    <!-- Reports Dropdown -->
+                    <div class="nav-item has-dropdown">
+                        <div class="nav-link dropdown-toggle">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reports</span>
+                            <i class="fas fa-chevron-down dropdown-icon"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="service_reports.html" class="dropdown-item">Service Reports</a>
+                            <a href="payments_reports.html" class="dropdown-item">Payment Reports</a>
+                            <a href="supply_reports.html" class="dropdown-item">Supply Reports</a>
+                            <a href="training_reports.html" class="dropdown-item">Training Reports</a>
+                            <a href="performance_reports.html" class="dropdown-item">Performance Reports</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <h3 class="nav-section-title">System</h3>
+                    
+                    <div class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </div>
+                    
+                    <div class="nav-item">
+                        <a href="index.html" class="nav-link">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Log Out</span>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content" id="mainContent">
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h2 class="page-title">All Users</h2>
+                </div>
+                <div class="header-right">
+                    <div class="user-profile">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span class="user-name">Admin User</span>
+                    </div>
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-body" id="contentBody">
+                <!-- Content will be dynamically loaded -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Add User Modal -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addUserForm">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Role</label>
+                            <select class="form-select" id="role" required>
+                                <option value="">Select Role</option>
+                                <option value="admin">Admin</option>
+                                <option value="Donor">Donor</option>
+                                <option value="Music Instructor">Music Instructor</option>
+                                <option value="Guardian">Guardian</option>
+                                <option value="Drama Instructor">Drama Instructor</option>
+                                <option value="Finance Manager">Finance Manager</option>
+                                <option value="Inventory Manager">Inventory Manager</option>
+                                <option value="Art Instructor">Art Instructor</option>
+                                <option value="Tournaments Manager">Tournaments Manager</option>
+                                <option value="Referee">Referee</option>
+                                <option value="Supplier">Supplier</option>
+                                <option value="Dance Instructor">Dance Instructor</option>
+                                <option value="Slum Footie Instructor">Slum Footie Instructor</option>
+                                <option value="Judge">Judge</option>
+                                <option value="Talent Development Officer">Talent Development Officer</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Status</label>
+                            <select class="form-select" id="status" required>
+                                <option value="approved">Approved</option>
+                                <option value="pending">Pending</option>
+                                <option value="suspended">Suspended</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveUserBtn">Save User</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyC5hvm0j760C9N6LZzwZeNsTCZLRzzbxt0",
+            authDomain: "talent-development-b8874.firebaseapp.com",
+            databaseURL: "https://talent-development-b8874-default-rtdb.firebaseio.com",
+            projectId: "talent-development-b8874",
+            storageBucket: "talent-development-b8874.firebasestorage.app",
+            messagingSenderId: "182286301943",
+            appId: "1:182286301943:web:0849bb7350e72495d8b1f2",
+            measurementId: "G-2BCLW7D2GH"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const auth = firebase.auth();
+
+        // Global variables
+        let allUsers = [];
+        let filteredUsers = [];
+        const itemsPerPage = 10;
+        let currentPage = 1;
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSidebar();
+            createUserInterface();
+            loadUserData();
+        });
+
+        // Sidebar functionality
+        function initializeSidebar() {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+
+            sidebarToggle.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.toggle('show');
+                } else {
+                    sidebar.classList.toggle('collapsed');
+                    mainContent.classList.toggle('expanded');
+                }
+            });
+
+            // Close sidebar on mobile when clicking outside
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768 && 
+                    !sidebar.contains(e.target) && 
+                    !sidebarToggle.contains(e.target)) {
+                    sidebar.classList.remove('show');
+                }
+            });
+        }
+
+        // Create the main user interface
+        function createUserInterface() {
+            const contentBody = document.getElementById('contentBody');
+            contentBody.innerHTML = `
+                <div class="card">
+                    <div class="card-header">
+                        <h3>All Users</h3>
+                        <div class="card-actions">
+                            <button class="add-user-btn" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                                <i class="fas fa-plus"></i> Add User
+                            </button>
+                            <div class="search-filter-container">
+                                <div class="search-box">
+                                    <input type="text" id="searchInput" placeholder="Search users...">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <select id="statusFilter" class="filter-select">
+                                    <option value="">All Statuses</option>
+                                    <option value="approved">Approved</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="suspended">Suspended</option>
+                                </select>
+                                <select id="roleFilter" class="filter-select">
+                                    <option value="">All Roles</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="Donor">Donor</option>
+                                    <option value="Music Instructor">Music Instructor</option>
+                                    <option value="Guardian">Guardian</option>
+                                    <option value="Drama Instructor">Drama Instructor</option>
+                                    <option value="Finance Manager">Finance Manager</option>
+                                    <option value="Inventory Manager">Inventory Manager</option>
+                                    <option value="Art Instructor">Art Instructor</option>
+                                    <option value="Tournaments Manager">Tournaments Manager</option>
+                                    <option value="Referee">Referee</option>
+                                    <option value="Supplier">Supplier</option>
+                                    <option value="Dance Instructor">Dance Instructor</option>
+                                    <option value="Slum Footie Instructor">Slum Footie Instructor</option>
+                                    <option value="Judge">Judge</option>
+                                    <option value="Talent Development Officer">Talent Development Officer</option>
+                                </select>
+                            </div>
+                            <div class="export-buttons">
+                                <button id="exportExcel" class="btn-export">
+                                    <i class="fas fa-file-excel"></i> Export Excel
+                                </button>
+                                <button id="exportPDF" class="btn-export">
+                                    <i class="fas fa-file-pdf"></i> Export PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="usersTable" class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>User ID</th>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Created At</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTableBody">
+                                    <tr>
+                                        <td colspan="7" class="loading">Loading users...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-footer">
+                            <div class="table-info">
+                                Showing <span id="showingCount">0</span> of <span id="totalCount">0</span> users
+                            </div>
+                            <div class="pagination">
+                                <button id="prevPage" disabled><i class="fas fa-chevron-left"></i></button>
+                                <span id="pageInfo">Page 1</span>
+                                <button id="nextPage" disabled><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            setupEventListeners();
+        }
+
+        // Load user data from Firebase
+        function loadUserData() {
+            const usersRef = database.ref('users');
+            
+            usersRef.on('value', (snapshot) => {
+                const usersData = snapshot.val();
+                allUsers = [];
+                
+                if (usersData) {
+                    Object.keys(usersData).forEach(key => {
+                        allUsers.push({
+                            id: key,
+                            ...usersData[key]
+                        });
+                    });
+                    
+                    allUsers.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                    applyFilters();
+                } else {
+                    document.getElementById('usersTableBody').innerHTML = `
+                        <tr>
+                            <td colspan="7" class="no-data">No users found</td>
+                        </tr>
+                    `;
+                    updateTableInfo();
+                }
+            }, (error) => {
+                console.error('Error loading users:', error);
+                document.getElementById('usersTableBody').innerHTML = `
+                    <tr>
+                        <td colspan="7" class="no-data">Error loading users</td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Format timestamp to readable date
+        function formatDate(timestamp) {
+            if (!timestamp) return 'N/A';
+            const date = new Date(timestamp);
+            return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+        }
+
+        // Apply search and filter criteria
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            const statusFilter = document.getElementById('statusFilter')?.value || '';
+            const roleFilter = document.getElementById('roleFilter')?.value || '';
+            
+            filteredUsers = allUsers.filter(user => {
+                const matchesSearch = 
+                    (user.username && user.username.toLowerCase().includes(searchTerm)) || 
+                    (user.email && user.email.toLowerCase().includes(searchTerm)) ||
+                    (user.role && user.role.toLowerCase().includes(searchTerm)) ||
+                    user.id.toLowerCase().includes(searchTerm);
+                
+                const matchesStatus = statusFilter ? (user.status === statusFilter) : true;
+                const matchesRole = roleFilter ? (user.role === roleFilter) : true;
+                
+                return matchesSearch && matchesStatus && matchesRole;
+            });
+            
+            currentPage = 1;
+            renderTable();
+        }
+
+        // Render the users table
+        function renderTable() {
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+            const tableBody = document.getElementById('usersTableBody');
+            
+            if (paginatedUsers.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="no-data">No users match your criteria</td>
+                    </tr>
+                `;
+            } else {
+                tableBody.innerHTML = paginatedUsers.map(user => `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.username || 'N/A'}</td>
+                        <td>${user.email || 'N/A'}</td>
+                        <td>${user.role || 'N/A'}</td>
+                        <td>
+                            <span class="status-badge status-${user.status || 'pending'}">
+                                ${user.status || 'pending'}
+                            </span>
+                        </td>
+                        <td>${formatDate(user.createdAt)}</td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="action-btn view-btn" data-id="${user.id}" title="View User">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn edit-btn" data-id="${user.id}" title="Edit User">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                ${user.status !== 'approved' ? `
+                                <button class="action-btn approve-btn" data-id="${user.id}" title="Approve User">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                ` : ''}
+                                ${user.status !== 'suspended' ? `
+                                <button class="action-btn suspend-btn" data-id="${user.id}" title="Suspend User">
+                                    <i class="fas fa-ban"></i>
+                                </button>
+                                ` : ''}
+                                <button class="action-btn delete-btn" data-id="${user.id}" title="Delete User">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+            
+            updateTableInfo();
+            updatePaginationButtons();
+        }
+
+        // Update table information display
+        function updateTableInfo() {
+            const showingCount = Math.min(currentPage * itemsPerPage, filteredUsers.length);
+            const startCount = filteredUsers.length > 0 ? ((currentPage - 1) * itemsPerPage) + 1 : 0;
+            
+            document.getElementById('showingCount').textContent = 
+                filteredUsers.length > 0 ? `${startCount}-${showingCount}` : '0';
+            document.getElementById('totalCount').textContent = filteredUsers.length;
+        }
+
+        // Update pagination buttons
+        function updatePaginationButtons() {
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
+            const pageInfo = document.getElementById('pageInfo');
+            
+            const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+            
+            prevBtn.disabled = currentPage <= 1;
+            nextBtn.disabled = currentPage >= totalPages;
+            pageInfo.textContent = `Page ${currentPage} of ${totalPages || 1}`;
+        }
+
+        // Update user status in Firebase
+        function updateUserStatus(userId, newStatus) {
+            const userRef = database.ref('users/' + userId);
+            userRef.update({
+                status: newStatus,
+                updatedAt: Date.now()
+            }).then(() => {
+                showNotification('User status updated successfully', 'success');
+            }).catch(error => {
+                console.error('Error updating user status:', error);
+                showNotification('Error updating user status: ' + error.message, 'error');
+            });
+        }
+
+        // Create authentication user
+        function createAuthUser(email, password) {
+            return auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    return userCredential.user.uid;
+                });
+        }
+
+        // Create database user
+        function createDatabaseUser(userData) {
+            const newUserRef = database.ref('users').push();
+            return newUserRef.set({
+                ...userData,
+                createdAt: Date.now(),
+                updatedAt: Date.now()
+            }).then(() => {
+                return newUserRef.key;
+            });
+        }
+
+        // Delete user from Firebase
+        function deleteUser(userId) {
+            return database.ref('users/' + userId).remove();
+        }
+
+        // Show notification (simple alert replacement)
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'error' ? 'danger' : type === 'success' ? 'success' : 'info'} alert-dismissible fade show`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                min-width: 300px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            `;
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        // Export to CSV (Excel format)
+        function exportToExcel() {
+            if (filteredUsers.length === 0) {
+                showNotification('No data to export', 'warning');
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+            
+            // Add headers
+            csvContent += "User ID,Username,Email,Role,Status,Created At\n";
+            
+            // Add data
+            filteredUsers.forEach(user => {
+                const row = [
+                    user.id || '',
+                    user.username || '',
+                    user.email || '',
+                    user.role || '',
+                    user.status || '',
+                    formatDate(user.createdAt)
+                ].map(field => `"${field.toString().replace(/"/g, '""')}"`).join(',');
+                
+                csvContent += row + "\n";
+            });
+            
+            // Create and trigger download
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `ayiera_users_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('Data exported successfully', 'success');
+        }
+
+        // Export to PDF (placeholder - would need jsPDF library)
+        function exportToPDF() {
+    // Create notification function if it doesn't exist
+    if (typeof showNotification !== 'function') {
+        // Simple notification implementation
+        const showNotification = (message, type = 'info') => {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <span>${message}</span>
+                <button class="notification-close">&times;</button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                notification.classList.add('fade-out');
+                setTimeout(() => notification.remove(), 300);
+            }, 5000);
+            
+            // Close button
+            notification.querySelector('.notification-close').addEventListener('click', () => {
+                notification.remove();
+            });
+        };
+        
+        // Add styles for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            .notification {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 4px;
+                color: white;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                max-width: 350px;
+                z-index: 1000;
+                transform: translateY(100px);
+                opacity: 0;
+                animation: slideIn 0.3s forwards;
+            }
+            
+            .notification-info {
+                background-color: #2196F3;
+            }
+            
+            .notification-success {
+                background-color: #4CAF50;
+            }
+            
+            .notification-warning {
+                background-color: #FF9800;
+            }
+            
+            .notification-error {
+                background-color: #F44336;
+            }
+            
+            .notification-close {
+                background: none;
+                border: none;
+                color: white;
+                font-size: 18px;
+                cursor: pointer;
+                margin-left: 15px;
+                padding: 0;
+                line-height: 1;
+            }
+            
+            .fade-out {
+                animation: fadeOut 0.3s forwards;
+            }
+            
+            @keyframes slideIn {
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes fadeOut {
+                to {
+                    opacity: 0;
+                    transform: translateY(100px);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    // Show the notification
+    showNotification('PDF export feature coming soon. Use Excel export for now.', 'info');
+    
+    // For future PDF implementation:
+    // This is where you would integrate with jsPDF or similar library
+    // Example:
+    /*
+    const doc = new jsPDF();
+    doc.text('Ayiera Initiative - Users Report', 10, 10);
+    // Add table data here
+    doc.save('users_report.pdf');
+    */
+}
+
+        // Set up all event listeners
+        function setupEventListeners() {
+            // Search and filter events
+            const searchInput = document.getElementById('searchInput');
+            const statusFilter = document.getElementById('statusFilter');
+            const roleFilter = document.getElementById('roleFilter');
+            
+            if (searchInput) searchInput.addEventListener('input', applyFilters);
+            if (statusFilter) statusFilter.addEventListener('change', applyFilters);
+            if (roleFilter) roleFilter.addEventListener('change', applyFilters);
+
+            // Pagination events
+            const prevPage = document.getElementById('prevPage');
+            const nextPage = document.getElementById('nextPage');
+            
+            if (prevPage) {
+                prevPage.addEventListener('click', () => {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        renderTable();
+                    }
+                });
+            }
+
+            if (nextPage) {
+                nextPage.addEventListener('click', () => {
+                    const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        renderTable();
+                    }
+                });
+            }
+
+            // Export events
+            const exportExcel = document.getElementById('exportExcel');
+            const exportPDF = document.getElementById('exportPDF');
+            
+            if (exportExcel) exportExcel.addEventListener('click', exportToExcel);
+            if (exportPDF) exportPDF.addEventListener('click', exportToPDF);
+
+            // Save new user
+            const saveUserBtn = document.getElementById('saveUserBtn');
+            if (saveUserBtn) {
+                saveUserBtn.addEventListener('click', function() {
+                    const username = document.getElementById('username').value.trim();
+                    const email = document.getElementById('email').value.trim();
+                    const password = document.getElementById('password').value;
+                    const role = document.getElementById('role').value;
+                    const status = document.getElementById('status').value;
+                    
+                    // Validation
+                    if (!username || !email || !password || !role || !status) {
+                        showNotification('Please fill in all required fields', 'error');
+                        return;
+                    }
+
+                    if (password.length < 6) {
+                        showNotification('Password must be at least 6 characters long', 'error');
+                        return;
+                    }
+
+                    // Disable button to prevent double submission
+                    saveUserBtn.disabled = true;
+                    saveUserBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+                    
+                    // Create user
+                    createDatabaseUser({
+                        username: username,
+                        email: email,
+                        role: role,
+                        status: status
+                    })
+                    .then(() => {
+                        showNotification('User created successfully', 'success');
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('addUserModal'));
+                        modal.hide();
+                        document.getElementById('addUserForm').reset();
+                    })
+                    .catch(error => {
+                        console.error('Error creating user:', error);
+                        showNotification('Error creating user: ' + error.message, 'error');
+                    })
+                    .finally(() => {
+                        saveUserBtn.disabled = false;
+                        saveUserBtn.innerHTML = 'Save User';
+                    });
+                });
+            }
+
+            // Action buttons event delegation
+            const usersTableBody = document.getElementById('usersTableBody');
+            if (usersTableBody) {
+                usersTableBody.addEventListener('click', function(e) {
+                    const target = e.target.closest('.action-btn');
+                    if (!target) return;
+                    
+                    const userId = target.getAttribute('data-id');
+                    const user = allUsers.find(u => u.id === userId);
+                    
+                    if (!user) {
+                        showNotification('User not found', 'error');
+                        return;
+                    }
+                    
+                    if (target.classList.contains('view-btn')) {
+                        showUserDetails(user);
+                    } else if (target.classList.contains('edit-btn')) {
+                        editUser(user);
+                    } else if (target.classList.contains('approve-btn')) {
+                        if (confirm(`Approve user ${user.username}?`)) {
+                            updateUserStatus(userId, 'approved');
+                        }
+                    } else if (target.classList.contains('suspend-btn')) {
+                        if (confirm(`Suspend user ${user.username}?`)) {
+                            updateUserStatus(userId, 'suspended');
+                        }
+                    } else if (target.classList.contains('delete-btn')) {
+                        if (confirm(`Are you sure you want to delete ${user.username}? This action cannot be undone.`)) {
+                            deleteUser(userId)
+                                .then(() => {
+                                    showNotification('User deleted successfully', 'success');
+                                })
+                                .catch(error => {
+                                    console.error('Error deleting user:', error);
+                                    showNotification('Error deleting user: ' + error.message, 'error');
+                                });
+                        }
+                    }
+                });
+            }
+
+            // Reset modal form when closed
+            const addUserModal = document.getElementById('addUserModal');
+            if (addUserModal) {
+                addUserModal.addEventListener('hidden.bs.modal', function() {
+                    document.getElementById('addUserForm').reset();
+                    const saveBtn = document.getElementById('saveUserBtn');
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = 'Save User';
+                });
+            }
+        }
+
+        // Show user details in a modal or alert
+        function showUserDetails(user) {
+            const details = `
+                User Details:
+                
+                ID: ${user.id}
+                Username: ${user.username || 'N/A'}
+                Email: ${user.email || 'N/A'}
+                Role: ${user.role || 'N/A'}
+                Status: ${user.status || 'N/A'}
+                Created: ${formatDate(user.createdAt)}
+                ${user.updatedAt ? 'Last Updated: ' + formatDate(user.updatedAt) : ''}
+            `;
+            
+            alert(details);
+        }
+
+        // Edit user (placeholder - would open edit modal)
+        function editUser(user) {
+            showNotification(`Edit functionality for ${user.username} would be implemented here`, 'info');
+        }
+
+        // Handle responsive design
+        function handleResize() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('show');
+            }
+        }
+
+        // Add resize event listener
+        window.addEventListener('resize', handleResize);
+
+        // Authentication state listener
+        auth.onAuthStateChanged(function(user) {
+            if (!user) {
+                // Redirect to login if not authenticated
+                console.log('User not authenticated');
+                // window.location.href = '/login.html';
+            }
+        });
+    </script>
+</body>
+</html>

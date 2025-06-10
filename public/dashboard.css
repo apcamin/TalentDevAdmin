@@ -1,0 +1,561 @@
+/* Dashboard Styles - Optimized for All Devices */
+:root {
+    /* Color Scheme */
+    --primary-blue: #1a73e8;
+    --dark-blue: #0d47a1;
+    --light-blue: #e8f0fe;
+    --white: #ffffff;
+    --gray: #f5f5f5;
+    --dark-gray: #757575;
+    
+    /* Layout Measurements */
+    --sidebar-width: 280px;
+    --sidebar-collapsed-width: 70px;
+    --header-height: 60px;
+    
+    /* Visual Effects */
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+/* Base Layout Structure */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    width: 100vw;
+    max-width: 100%;
+    overflow: hidden;
+    background-color: var(--light-blue);
+}
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    background-color: var(--white);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    transform: translateX(-100%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex: 1;
+    min-height: 100vh;
+    transition: var(--transition);
+    width: 100%;
+    margin-left: 0;
+}
+
+/* Header Styles */
+.top-header {
+    width: fit-content;
+    height: var(--header-height);
+    background-color: var(--white);
+    box-shadow: var(--shadow);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    width: 100%;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.sidebar-toggle {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--dark-gray);
+    cursor: pointer;
+    display: block;
+}
+
+.page-title {
+    font-size: 1.1rem;
+    color: var(--dark-blue);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Sidebar Content Styles */
+.sidebar-header {
+    padding: 1.25rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    text-align: center;
+    min-height: var(--header-height);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--dark-blue);
+    gap: 0.5rem;
+}
+
+.logo i {
+    font-size: 1.8rem;
+}
+
+.logo h1 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.tagline {
+    font-size: 0.75rem;
+    color: var(--dark-gray);
+    margin-top: 0.25rem;
+}
+
+.sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.5rem 0;
+}
+
+/* Navigation Items */
+.nav-section {
+    margin-bottom: 1rem;
+}
+
+.nav-section-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--dark-gray);
+    padding: 0 1.25rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.5px;
+}
+
+.nav-item {
+    margin: 0.15rem 0;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+    color: var(--dark-gray);
+    text-decoration: none;
+    transition: var(--transition);
+    position: relative;
+    gap: 0.75rem;
+}
+
+.nav-link:hover {
+    background-color: var(--light-blue);
+    color: var(--primary-blue);
+}
+
+.nav-link i {
+    font-size: 1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.nav-link.active {
+    background-color: var(--light-blue);
+    color: var(--primary-blue);
+    font-weight: 500;
+}
+
+.nav-link.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background-color: var(--primary-blue);
+}
+
+/* Dropdown Styles */
+.has-dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    cursor: pointer;
+    justify-content: space-between;
+}
+
+.dropdown-icon {
+    transition: var(--transition);
+    font-size: 0.7rem;
+}
+
+.dropdown-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: var(--transition);
+    background-color: var(--gray);
+    border-radius: 0 0 6px 6px;
+    margin: 0 0.5rem;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 0.5rem 1rem 0.5rem 3rem;
+    color: var(--dark-gray);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: var(--transition);
+}
+
+.dropdown-item:hover {
+    color: var(--primary-blue);
+    background-color: rgba(26, 115, 232, 0.1);
+}
+
+.nav-item.active .dropdown-menu {
+    max-height: 500px;
+    padding: 0.25rem 0;
+}
+
+.nav-item.active .dropdown-icon {
+    transform: rotate(180deg);
+}
+
+/* User Profile Elements */
+.user-profile {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--light-blue);
+    color: var(--primary-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--dark-gray);
+    margin-left: 0.5rem;
+}
+
+.notifications {
+    position: relative;
+    color: var(--dark-gray);
+    cursor: pointer;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--primary-blue);
+    color: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Content Area Styles */
+.content-body {
+    padding: 1rem;
+    background-color: var(--light-blue);
+    min-height: calc(100vh - var(--header-height));
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - var(--header-height) - 2rem);
+    text-align: center;
+    color: var(--dark-gray);
+    padding: 1rem;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    color: var(--primary-blue);
+    margin-bottom: 1rem;
+    opacity: 0.3;
+}
+
+.empty-state h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--dark-blue);
+}
+
+.empty-state p {
+    font-size: 0.9rem;
+    max-width: 350px;
+}
+
+/* Responsive Behavior */
+/* Tablet (768px and up) */
+@media (min-width: 768px) {
+    .sidebar {
+        transform: translateX(0);
+        position: relative;
+    }
+
+    .main-content {
+        margin-left: var(--sidebar-width);
+        width: calc(100% - var(--sidebar-width));
+    }
+
+    .sidebar-toggle {
+        display: none;
+    }
+
+    .content-body {
+        padding: 1.25rem;
+    }
+}
+
+/* Desktop (992px and up) */
+@media (min-width: 992px) {
+    :root {
+        --sidebar-width: 240px;
+    }
+
+    /* Collapsible sidebar behavior */
+    .sidebar-collapsed .sidebar {
+        width: var(--sidebar-collapsed-width);
+    }
+
+    .sidebar-collapsed .main-content {
+        margin-left: var(--sidebar-collapsed-width);
+    }
+
+    .sidebar-collapsed .logo h1,
+    .sidebar-collapsed .tagline,
+    .sidebar-collapsed .nav-link span,
+    .sidebar-collapsed .nav-section-title,
+    .sidebar-collapsed .dropdown-toggle span {
+        display: none;
+    }
+
+    .sidebar-collapsed .nav-link {
+        justify-content: center;
+        padding: 0.75rem 0;
+    }
+
+    .sidebar-collapsed .nav-link i {
+        margin-left: 0;
+    }
+
+    .sidebar-collapsed .dropdown-menu {
+        position: absolute;
+        left: 100%;
+        top: 0;
+        width: 200px;
+        background-color: var(--white);
+        box-shadow: var(--shadow);
+        border-radius: 0 6px 6px 0;
+        z-index: 10;
+    }
+}
+
+/* Large Desktop (1200px and up) */
+@media (min-width: 1200px) {
+    :root {
+        --sidebar-width: 280px;
+        --header-height: 70px;
+    }
+
+    .content-body {
+        padding: 1.5rem;
+    }
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 767px) {
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .logo h1,
+    .tagline,
+    .nav-link span,
+    .nav-section-title,
+    .dropdown-toggle span {
+        display: none;
+    }
+
+    .nav-link {
+        justify-content: center;
+        padding: 0.75rem 0;
+    }
+
+    .nav-link i {
+        margin-left: 0;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        left: 100%;
+        top: 0;
+        width: 200px;
+        background-color: var(--white);
+        box-shadow: var(--shadow);
+        border-radius: 0 6px 6px 0;
+        z-index: 10;
+    }
+
+    .page-title {
+        max-width: 180px;
+    }
+}
+/* Table Styles */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    background-color: var(--white);
+    box-shadow: var(--shadow);
+}
+
+.table th {
+    background-color: var(--primary-blue);
+    color: white;
+    font-weight: 500;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+.table tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Card Styles */
+.card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+    background-color: var(--white);
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Form Controls */
+.form-control {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px 12px;
+    width: 100%;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 0.2rem rgba(26, 115, 232, 0.25);
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+/* Button Styles */
+.btn {
+    padding: 10px 16px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+}
+
+.btn-primary {
+    background-color: var(--primary-blue);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--dark-blue);
+}
+
+/* Status Badges (already in your JS but can also be in CSS) */
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+    display: inline-block;
+}
+
+.status-badge.approved {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-badge.pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-badge.rejected {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .table th, .table td {
+        padding: 8px 10px;
+    }
+    
+    .card-body {
+        padding: 15px;
+    }
+}
