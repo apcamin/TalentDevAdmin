@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Performance Reports | Ayiera Initiative Talent Development</title>
+    <title>Dashboard | Ayiera Initiative Talent Development</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* CSS will be inline for better loading */
@@ -118,13 +118,13 @@
         </aside>
 
         <!-- Main Content Area -->
-        <main class="main-content">
+        <main class="main-content" id="mainContent">
             <header class="top-header">
                 <div class="header-left">
-                    <button class="sidebar-toggle">
+                    <button class="sidebar-toggle" id="sidebarToggle">
                         <i class="fas fa-bars"></i>
                     </button>
-                    <h2 class="page-title">Performance Reports</h2>
+                    <h2 class="page-title">All Users</h2>
                 </div>
                 <div class="header-right">
                     <div class="user-profile">
@@ -140,17 +140,20 @@
                 </div>
             </header>
 
-            <div class="content-body">
-                <!-- Empty main body as requested -->
-                <div class="empty-state">
-                    <i class="fas fa-chart-pie empty-icon"></i>
-                    <h3>Welcome to Your Dashboard</h3>
-                    <p>Select an option from the sidebar to get started</p>
-                </div>
+            <div class="content-body" id="contentBody">
+                <!-- Content will be dynamically loaded -->
             </div>
         </main>
     </div>
 
-    <script src="dashboard.js"></script>
+
+   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="attendance.js"></script> 
+    
+
 </body>
 </html>

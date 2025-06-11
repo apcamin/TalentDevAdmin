@@ -80,7 +80,7 @@
 <body>
     <div class="dashboard-container">
         <!-- Sidebar Navigation (unchanged from your original) -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
                     <i class="fas fa-graduation-cap"></i>
@@ -101,68 +101,83 @@
 
                 <div class="nav-section">
                     <h3 class="nav-section-title">Management</h3>
-                    
-                    <!-- Users Dropdown -->
-                    <div class="nav-item has-dropdown">
-                        <div class="nav-link dropdown-toggle">
+                    <div class="nav-item">
+                        <a href="all_users.html" class="nav-link">
                             <i class="fas fa-users"></i>
-                            <span>Users</span>
-                            <i class="fas fa-chevron-down dropdown-icon"></i>
-                        </div>
-                        <div class="dropdown-menu">
-                            <a href="all_users.html" class="dropdown-item">All Users</a>
-                            <!-- <a href="active_users.html" class="dropdown-item">Active</a>
-                            <a href="pending_users.html" class="dropdown-item">Pending</a>
-                            <a href="suspended_users.html" class="dropdown-item">Suspended</a> -->
-                        </div>
+                            <span>All Users</span>
+                        </a>
                     </div>
-                    
-                    <!-- Employees Dropdown -->
-                    <!-- <div class="nav-item has-dropdown">
-                        <div class="nav-link dropdown-toggle">
-                            <i class="fas fa-user-tie"></i>
-                            <span>Employees</span>
-                            <i class="fas fa-chevron-down dropdown-icon"></i>
-                        </div>
-                        <div class="dropdown-menu">
-                            <a href="all_employees.html" class="dropdown-item">All Employees</a>
-                            <a href="active_employees.html" class="dropdown-item">Active</a>
-                            <a href="pending_employees.html" class="dropdown-item">Pending</a>
-                            <a href="suspended_employees.html" class="dropdown-item">Suspended</a>
-                        </div>
-                    </div> -->
+                    <div class="nav-item">
+                        <a href="mentees.html" class="nav-link">
+                            <i class="fas fa-users"></i>
+                            <span>Mentees</span>
+                        </a>
+                    </div>
+                    <!--
+                    <div class="nav-item">
+                        <a href="active_users.html" class="nav-link">
+                            <i class="fas fa-user-check"></i>
+                            <span>Active Users</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="pending_users.html" class="nav-link">
+                            <i class="fas fa-user-clock"></i>
+                            <span>Pending Users</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="suspended_users.html" class="nav-link">
+                            <i class="fas fa-user-slash"></i>
+                            <span>Suspended Users</span>
+                        </a>
+                    </div>
+                    -->
+                    <!-- Employees links can be added here if needed -->
                 </div>
 
                 <div class="nav-section">
                     <h3 class="nav-section-title">Reports</h3>
-                    
-                    <!-- Reports Dropdown -->
-                    <div class="nav-item has-dropdown">
-                        <div class="nav-link dropdown-toggle">
+                    <div class="nav-item">
+                        <a href="service_reports.html" class="nav-link">
                             <i class="fas fa-chart-bar"></i>
-                            <span>Reports</span>
-                            <i class="fas fa-chevron-down dropdown-icon"></i>
-                        </div>
-                        <div class="dropdown-menu">
-                            <a href="service_reports.html" class="dropdown-item">Service Reports</a>
-                            <a href="payments_reports.html" class="dropdown-item">Payment Reports</a>
-                            <a href="supply_reports.html" class="dropdown-item">Supply Reports</a>
-                            <a href="training_reports.html" class="dropdown-item">Training Reports</a>
-                            <a href="performance_reports.html" class="dropdown-item">Performance Reports</a>
-                        </div>
+                            <span>Service Reports</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="payments_reports.html" class="nav-link">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <span>Payment Reports</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="supply_reports.html" class="nav-link">
+                            <i class="fas fa-truck"></i>
+                            <span>Supply Reports</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="attendance.html" class="nav-link">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <span>Attendance Reports</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="performance_reports.html" class="nav-link">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Performance Reports</span>
+                        </a>
                     </div>
                 </div>
 
                 <div class="nav-section">
                     <h3 class="nav-section-title">System</h3>
-                    
                     <div class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="fas fa-cog"></i>
                             <span>Settings</span>
                         </a>
                     </div>
-                    
                     <div class="nav-item">
                         <a href="index.html" class="nav-link">
                             <i class="fas fa-sign-out-alt"></i>
